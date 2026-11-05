@@ -2,8 +2,6 @@
 
 > Vibe Coding & Web Development Portfolio
 
----
-
 ## About Me
 
 다양한 아이디어를 구체화하고, AI 도구를 활용해 실제 작동하는 결과물로 구현합니다.
@@ -25,8 +23,6 @@
     - Netlify
     - GitHub
     - Notion
-
----
 
 ## Projects
 
