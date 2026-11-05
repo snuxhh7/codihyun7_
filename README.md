@@ -42,6 +42,6 @@
 
 [**Website**](https://schoolquestboard.netlify.app) | 완성된 웹 화면입니다.
 
-[**Documentation**](SchoolQuestBoard/docs/SchoolQuestBoard_Specification.html)
+[**Documentation**](SchoolQuestBoard/docs/Specification.html)
 
 [**Project Detail**]() | Notion으로 연결됩니다.
