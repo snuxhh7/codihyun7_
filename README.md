@@ -40,8 +40,8 @@
 
 **Development Duration** | 2026.05.27 ~ 2026.05.30
 
-[**Website**](schoolquestboard.netlify.app) | 완성된 웹 화면입니다.
+[**Website**](https://schoolquestboard.netlify.app) | 완성된 웹 화면입니다.
 
-[**Documentation**](docs/SchoolQuestBoard_Specification.html)
+[**Documentation**](SchoolQuestBoard/docs/SchoolQuestBoard_Specification.html)
 
 [**Project Detail**]() | Notion으로 연결됩니다.
