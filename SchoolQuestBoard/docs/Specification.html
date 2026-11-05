@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>작전 통제 센터 · 개발 명세서</title>
+<link href="https://fonts.googleapis.com/css2?family=DungGeunMo&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pt:   #ff9d00;
+  --bg:   #111111;
+  --bg2:  #1a1a1a;
+  --bd:   #333333;
+  --tx:   #f5f5f5;
+  --t2:   #cccccc;
+  --t3:   #888888;
+  --gr:   #4ade80;
+  --mk:   rgba(255,157,0,0.15);
+}
+
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { max-width: 800px; margin: 0 auto; padding: 72px 32px 140px; }
+
+/* ── 내비 ── */
+.nav-back {
+  display: inline-block; font-size: 14px; color: var(--pt);
+  text-decoration: none; margin-bottom: 52px;
+}
+.nav-back:hover { text-decoration: underline; }
+
+/* ── 커버 ── */
+.cover { margin-bottom: 60px; }
+.cover-badge {
+  display: inline-block;
+  font-family: 'DungGeunMo', monospace; font-size: 11px;
+  color: var(--pt); border: 1px solid var(--pt);
+  padding: 2px 10px; letter-spacing: 3px; margin-bottom: 18px;
+}
+.cover-icon { font-size: 40px; display: block; margin-bottom: 12px; }
+.cover-title {
+  font-family: 'DungGeunMo', monospace;
+  font-size: 56px; color: var(--tx);
+  line-height: 1.2; margin-bottom: 8px;
+}
+.cover-title span { color: var(--pt); }
+.cover-sub { font-size: 17px; color: var(--t3); margin-bottom: 32px; }
+.cover-rule { border: none; border-top: 2px solid var(--bd); margin-bottom: 20px; }
+.cover-spec { font-size: 20px; font-weight: 700; color: var(--tx); }
+
+/* ── 섹션 ── */
+.section { margin-bottom: 60px; }
+
+h2 {
+  font-size: 26px; font-weight: 700; color: var(--tx);
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--bd);
+}
+h2 .sec-num { color: var(--pt); font-family: 'DungGeunMo', monospace; margin-right: 8px; font-size: 20px; }
+
+h3 {
+  font-size: 20px; font-weight: 700; color: var(--tx);
+  margin: 28px 0 10px;
+}
+
+/* ── 본문 ── */
+p { font-size: 18px; color: var(--t2); margin-bottom: 14px; line-height: 1.85; }
+mark { background: var(--mk); color: var(--pt); padding: 0 3px; font-weight: 500; }
+code {
+  background: var(--bg2); border: 1px solid var(--bd);
+  padding: 2px 6px; font-family: 'DungGeunMo', monospace;
+  font-size: 16px; color: #f87171;
+}
+strong { font-weight: 700; color: var(--tx); }
+
+/* ── 목록 ── */
+ul { padding-left: 0; list-style: none; margin-bottom: 16px; }
+li {
+  font-size: 18px; color: var(--t2);
+  padding: 6px 0 6px 22px; position: relative; line-height: 1.75;
+  border-bottom: 1px solid var(--bd);
+}
+li:last-child { border-bottom: none; }
+li::before { content: '—'; position: absolute; left: 0; color: var(--pt); font-weight: 700; }
+
+/* ── 코드 블록 ── */
+pre {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-left: 3px solid var(--pt);
+  padding: 20px 22px; margin: 16px 0; overflow-x: auto;
+  font-family: 'DungGeunMo', monospace; font-size: 14px;
+  line-height: 1.8; color: #ccc;
+}
+pre .cmt { color: #555; } pre .kw { color: #60a5fa; }
+pre .str { color: var(--gr); } pre .num { color: var(--pt); }
+
+/* ── 테이블 ── */
+.tbl-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 17px; }
+th {
+  background: var(--bg2); font-weight: 700; text-align: left;
+  padding: 13px 16px; border: 1px solid var(--bd); color: var(--tx);
+  font-size: 15px;
+}
+td { padding: 13px 16px; border: 1px solid var(--bd); color: var(--t2); vertical-align: top; line-height: 1.65; }
+tr:hover td { background: #1f1f1f; }
+
+/* ── MVP 카드 ── */
+.mvp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+@media (max-width: 560px) { .mvp-grid { grid-template-columns: 1fr; } }
+.mvp-card {
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-top: 3px solid var(--bd); padding: 22px;
+  transition: border-top-color .15s;
+}
+.mvp-card:hover { border-top-color: var(--pt); }
+.mvp-card-num { font-family: 'DungGeunMo', monospace; font-size: 12px; color: var(--t3); letter-spacing: 2px; margin-bottom: 8px; }
+.mvp-card-title { font-size: 17px; font-weight: 700; color: var(--tx); margin-bottom: 10px; }
+.mvp-card-desc { font-size: 16px; color: var(--t2); line-height: 1.7; }
+
+/* ── 발전가능성 ── */
+.future-item { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--bd); align-items: flex-start; }
+.future-item:last-child { border-bottom: none; }
+.future-label { font-weight: 700; color: var(--tx); font-size: 17px; flex-shrink: 0; min-width: 130px; }
+.future-desc { font-size: 17px; color: var(--t2); line-height: 1.7; }
+
+/* ── 체크리스트 ── */
+.checklist { list-style: none; padding: 0; margin-top: 14px; }
+.checklist li { padding: 12px 0; border-bottom: 1px solid var(--bd); padding-left: 0; }
+.checklist li::before { display: none; }
+.checklist li:last-child { border-bottom: none; }
+.cl-label { display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none; }
+.cl-label:hover .cb { border-color: var(--gr); }
+.cl-input { display: none; }
+.cb {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border: 2px solid var(--bd);
+  flex-shrink: 0; font-size: 13px; color: transparent; transition: .15s;
+}
+.cl-input:checked ~ .cb { background: var(--gr); border-color: var(--gr); color: #000; }
+.cl-text { font-size: 18px; color: var(--t2); line-height: 1.6; }
+.cl-input:checked ~ .cl-text { color: var(--t3); text-decoration: line-through; }
+
+/* ── 진행 ── */
+.progress-wrap { margin-bottom: 16px; }
+.progress-label { font-size: 15px; color: var(--t3); margin-bottom: 8px; }
+.progress-bar { height: 4px; background: var(--bd); overflow: hidden; }
+.progress-fill { height: 100%; background: var(--gr); transition: width .3s; }
+
+/* ── 푸터 ── */
+footer {
+  margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--bd);
+  font-size: 14px; color: var(--t3); text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="nav-back" href="#">← 홈으로</a>
+
+  <div class="cover">
+    <div class="cover-badge">OFFICIAL GUIDE</div>
+    <span class="cover-icon">🎮</span>
+    <h1 class="cover-title"><span>작전 통제 센터</span></h1>
+    <p class="cover-sub">초대코드 · 퀘스트 관리 · 개인 완료 체크 · Q&A</p>
+    <hr class="cover-rule">
+    <div class="cover-spec">학생용 개발 명세서: 작전 통제 센터 (학교 퀘스트 보드)</div>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">1.</span> 우리가 만들 것</h2>
+    <p>AI 도구를 활용해서 만드는 일반 웹서비스다.</p>
+    <p>만들 서비스는 <code>작전 통제 센터</code>다.</p>
+    <p>같은 반 학생들이 <mark>수행평가·과제 마감 같은 일정(퀘스트)</mark>을 공유하고, <mark>Q&A로 묻고 답하며</mark>, 마감 임박순으로 모아 봐서 <mark>놓치지 않게</mark> 한다. 반을 만들면 초대코드가 생긴다. 친구들은 코드를 입력해 같은 반 보드에 들어온다.</p>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">2.</span> 계층 구조</h2>
+    <p>이 서비스의 핵심은 <mark>2단 계층</mark>이다.</p>
+<pre>학교 (school)
+ └── 반 (class) — 4자리 초대코드로 참여
+      ├── 퀘스트 (quest) — 제목·과목·마감일·설명
+      │    └── Q&A — 질문·답변
+      └── 완료 상태 — 개인별 localStorage, 공유 안 됨</pre>
+    <ul>
+      <li><strong>반 퀘스트</strong>: 같은 코드로 입장한 학생 전원이 공유한다.</li>
+      <li><strong>완료 체크</strong>: 퀘스트는 공유되지만, 내가 완료했는지는 나만 안다.</li>
+      <li><strong>Q&A</strong>: 카테고리(퀘스트 관련·학교 생활·기타)로 분류해 질문·답변을 달 수 있다.</li>
+    </ul>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">3.</span> 서비스에 필요한 데이터</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>데이터</th><th>설명</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>학교</td><td>반이 속한 최상위 단위</td><td>한빛고</td></tr>
+          <tr><td>반</td><td>4자리 초대코드로 식별되는 그룹</td><td>1학년 2반 / A3F7</td></tr>
+          <tr><td>퀘스트</td><td>제목·과목·마감일·설명 포함</td><td>국어 수행평가</td></tr>
+          <tr><td>Q&A</td><td>질문·답변·닉네임·카테고리</td><td>"분량 몇 장?" → "A4 2장"</td></tr>
+          <tr><td>완료 상태</td><td>내가 끝낸 퀘스트 목록. 공유 안 됨</td><td>quest id 배열</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">4.</span> 기본 데이터 예시</h2>
+<pre><span class="kw">const</span> sessionData = {
+  <span class="str">"A3F7KZ"</span>: {
+    school: <span class="str">"한빛고"</span>, grade: <span class="str">"1"</span>, cls: <span class="str">"2"</span>,
+    quests: [{ id: <span class="num">1748500000000</span>, title: <span class="str">"국어 수행평가"</span>, subject: <span class="str">"국어"</span>, due: <span class="str">"2026-06-05"</span>, desc: <span class="str">"A4 2장"</span> }],
+    qa:     [{ id: <span class="num">1748500001000</span>, nick: <span class="str">"초코"</span>, title: <span class="str">"분량 몇 장?"</span>, cat: <span class="str">"quest"</span>, answers: [{ nick: <span class="str">"라온"</span>, body: <span class="str">"A4 2장이요"</span> }], open: <span class="kw">true</span> }]
+  }
+};
+<span class="cmt">// 완료 상태는 브라우저마다 따로 저장</span>
+<span class="kw">const</span> myDone = <span class="kw">new</span> Set(JSON.parse(localStorage.getItem(<span class="str">"done_A3F7KZ"</span>) ?? <span class="str">"[]"</span>));</pre>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">5.</span> 만들어야 할 화면</h2>
+    <h3>메인 화면 — 작전 통제 센터</h3>
+    <ul>
+      <li>신규 퀘스트 생성: 학교·학년·반 입력 → 4자리 초대코드를 직접 입력해 생성</li>
+      <li>파티 입장: 코드 입력 → 불일치 시 오류, 일치 시 보드로 전환</li>
+      <li>시스템 설정: 사격 파티클 · 야간 투시 ON/OFF</li>
+    </ul>
+    <h3>퀘스트 보드</h3>
+    <ul>
+      <li>퀘스트 목록 탭: 등록 폼(제목·과목·마감일·설명) + 정렬 바 + 카드 목록(완료 체크·수정·삭제)</li>
+      <li>Q&A 탭: 질문 등록(닉네임·제목·내용·카테고리) + 답변 달기 + 펼치기·접기</li>
+    </ul>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">6.</span> 반드시 만들어야 하는 기능 (MVP)</h2>
+    <p>아래 6개가 이 서비스의 <strong>MVP</strong>다.</p>
+    <div class="mvp-grid">
+      <div class="mvp-card"><div class="mvp-card-num">FEATURE 01</div><div class="mvp-card-title">반 만들기 / 참여</div><div class="mvp-card-desc">반을 만들면 4자리 초대코드가 생긴다. 친구는 코드를 입력해 같은 반 보드에 들어온다.</div></div>
+      <div class="mvp-card"><div class="mvp-card-num">FEATURE 02</div><div class="mvp-card-title">퀘스트 등록 / 수정 / 삭제</div><div class="mvp-card-desc">제목·과목·마감일·해야 하는 것을 입력해 등록한다. 수정은 모달, 삭제는 확인 후 제거한다.</div></div>
+      <div class="mvp-card"><div class="mvp-card-num">FEATURE 03</div><div class="mvp-card-title">마감일 D-day 표시 및 정렬</div><div class="mvp-card-desc">마감까지 남은 날을 색상으로 표시한다. 5가지 정렬 조건을 지원한다.</div></div>
+      <div class="mvp-card"><div class="mvp-card-num">FEATURE 04</div><div class="mvp-card-title">개인 완료 체크</div><div class="mvp-card-desc">내가 끝낸 퀘스트에 체크한다. 완료 상태는 나만 보이고 다른 친구에게는 공유되지 않는다.</div></div>
+      <div class="mvp-card"><div class="mvp-card-num">FEATURE 05</div><div class="mvp-card-title">Q&A</div><div class="mvp-card-desc">카테고리별로 질문을 올리고 답변을 단다. 답변은 펼치기·접기로 확인한다.</div></div>
+      <div class="mvp-card"><div class="mvp-card-num">FEATURE 06</div><div class="mvp-card-title">FPS 인터페이스</div><div class="mvp-card-desc">크로스헤어 커서, 클릭 파티클, 야간 투시. DungGeunMo 폰트 기반 픽셀 UI.</div></div>
+    </div>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">7.</span> 앞으로 더 추가할 방향</h2>
+    <p>지금은 기본 기능 위주지만, 다음 버전에서는 <mark>더 풍부한 분류와 학습 지원</mark>을 붙일 계획이다.</p>
+    <div class="future-item"><div class="future-label">카테고리 분류</div><div class="future-desc">과제·수행평가·시험으로 퀘스트를 분류하고 필터링</div></div>
+    <div class="future-item"><div class="future-label">학사 일정 연결</div><div class="future-desc">'해야 하는 것'과 '단순 일정'을 구분해 표시</div></div>
+    <div class="future-item"><div class="future-label">Q&A 고도화</div><div class="future-desc">퀘스트에 Q&A를 직접 연결하거나 별도 게시판으로 분리</div></div>
+    <div class="future-item"><div class="future-label">과목별 단어장</div><div class="future-desc">수행평가·시험 범위 개념을 과목별로 등록·공유</div></div>
+    <div class="future-item"><div class="future-label">정렬 조건 확장</div><div class="future-desc">카테고리순, 완료 먼저 등 조건 추가</div></div>
+  </div>
+
+
+  <div class="section">
+    <h2><span class="sec-num">8.</span> 완성 체크리스트 = 개발 완료 기준</h2>
+    <p><strong>아래 항목이 전부 체크되면 개발은 완료된 것이다.</strong></p>
+    <div class="progress-wrap">
+      <div class="progress-label" id="cl-progress">0 / 7 완료</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <ul class="checklist">
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl0"><span class="cb">✓</span><span class="cl-text">반을 만들면 4자리 초대코드가 생긴다.</span></label></li>
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl1"><span class="cb">✓</span><span class="cl-text">초대코드로 같은 반 보드에 들어갈 수 있다.</span></label></li>
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl2"><span class="cb">✓</span><span class="cl-text">퀘스트를 등록·수정·삭제할 수 있다.</span></label></li>
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl3"><span class="cb">✓</span><span class="cl-text">마감일 D-day가 색상으로 표시된다.</span></label></li>
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl4"><span class="cb">✓</span><span class="cl-text">5가지 조건으로 정렬할 수 있다.</span></label></li>
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl5"><span class="cb">✓</span><span class="cl-text">완료 체크가 개인별로 따로 저장된다.</span></label></li>
+      <li><label class="cl-label"><input class="cl-input" type="checkbox" data-key="cl6"><span class="cb">✓</span><span class="cl-text">퀘스트에 Q&A를 달 수 있다.</span></label></li>
+    </ul>
+  </div>
+
+  <script>
+    const inputs = document.querySelectorAll('.cl-input');
+    function updateProgress() {
+      const total = inputs.length, checked = [...inputs].filter(i => i.checked).length;
+      document.getElementById('cl-progress').textContent =
+        checked + ' / ' + total + ' 완료' + (checked === total ? ' — 개발 완료! 🎉' : '');
+      document.getElementById('progress-fill').style.width = (checked / total * 100) + '%';
+    }
+    inputs.forEach(input => {
+      try { if (localStorage.getItem('spec_' + input.dataset.key) === '1') input.checked = true; } catch(e) {}
+      input.addEventListener('change', () => {
+        try { localStorage.setItem('spec_' + input.dataset.key, input.checked ? '1' : '0'); } catch(e) {}
+        updateProgress();
+      });
+    });
+    updateProgress();
+  </script>
+
+  <footer>작전 통제 센터 · 개발 명세서 · 2026</footer>
+
+</div>
+</body>
+</html>
