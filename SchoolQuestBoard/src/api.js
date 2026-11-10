@@ -1,4 +1,4 @@
-const BASE = '/api'
+const BASE = 'https://school-quest-board.onrender.com/api'
 
 async function request(method, path, body, adminKey) {
   const headers = { 'Content-Type': 'application/json' }
