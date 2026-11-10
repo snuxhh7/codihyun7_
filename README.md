@@ -40,4 +40,4 @@
 
 [**Documentation**](SchoolQuestBoard/docs/Specification.html) | 작전 통제 센터의 명세서 HTML 파일입니다.
 
-[**Project Detail**]() | Notion으로 연결됩니다.
+[**Project Detail**](https://app.notion.com/p/40fea5f89127807d8b70e2686f682d54?source=copy_link) | Notion으로 연결됩니다.
