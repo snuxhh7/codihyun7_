@@ -36,8 +36,22 @@
 
 **Development Duration** | 2026.05.27 ~ 2026.05.30
 
-[**Website**](https://schoolquestboard.netlify.app) | 완성된 웹 화면입니다.
+[**Website**](school-quest-board.vercel.app) | 완성된 웹 화면입니다.
 
 [**Documentation**](SchoolQuestBoard/docs/Specification.html) | 작전 통제 센터의 명세서 HTML 파일입니다.
 
 [**Project Detail**](https://app.notion.com/p/40fea5f89127807d8b70e2686f682d54?source=copy_link) | Notion으로 연결됩니다.
+
+### 02. Kitty Memory Game
+
+**Tech Stack** | Mediapipe
+
+**Used AI** | Gemini
+
+**Preview** | 카메라를 통해 손가락을 인식하여 카드를 뒤집는 <u>카드 메모리 게임</u>을 할 수 있는 웹사이트입니다.
+
+**Development Duration** | 
+
+[**Website**]() | 완성된 웹 화면입니다.
+
+[**Project Detail**]() | Notion으로 연결됩니다.
