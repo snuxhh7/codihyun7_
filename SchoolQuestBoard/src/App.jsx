@@ -7,6 +7,7 @@ import RoomListModal from './components/modals/RoomListModal'
 import QuestBoard from './components/board/QuestBoard'
 import { useParticles } from './hooks/useParticles'
 import { useToast } from './hooks/useToast'
+import * as api from './api'
 
 const ADMIN_KEY = '0207'
 
@@ -75,8 +76,7 @@ export default function App() {
 
   const fetchRoomInfo = async (roomId, username) => {
     try {
-      const res = await fetch(`/api/rooms`)
-      const rooms = await res.json()
+      const rooms = await api.getRooms() // ✅ api.getRooms()는 이미 JSON 데이터를 바로 반환합니다!
       const room = rooms.find((r) => r.id === roomId)
       if (!room) { showToast('❌ 방 정보를 찾을 수 없습니다'); return }
       const roomData = { roomId, username, roomInfo: room }
