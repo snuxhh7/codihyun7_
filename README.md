@@ -36,7 +36,7 @@
 
 **Development Duration** | 2026.05.27 ~ 2026.05.30
 
-[**Website**](https://school-quest-board.vercel.app) | 완성된 웹 화면입니다.
+[**Website**](https://school-quest-board-seven.vercel.app) | 완성된 웹 화면입니다.
 
 [**Documentation**](https://school-quest-board-docs.vercel.app) | 작전 통제 센터의 명세서입니다.
 
